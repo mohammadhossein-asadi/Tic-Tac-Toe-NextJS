@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import TicTacToe from "./components/game";
+import Loading from "./loading";
 
 export default function Home() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <TicTacToe />
     </Suspense>
   );
