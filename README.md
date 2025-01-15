@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# Next.js Tic Tac Toe 🎮
 
-First, run the development server:
+A modern implementation of the classic Tic Tac Toe game built with **Next.js**, **TypeScript**, and **Framer Motion**. Features a beautiful UI, smooth animations, and advanced gameplay features like move history and undo/redo functionality.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+![Tic Tac Toe Game](public/splash.png)
+
+
+## ✨ Features
+
+- 🎮 **Classic Tic Tac Toe gameplay**
+- 🎯 **Interactive game board** with smooth animations
+- ⏪ **Undo/Redo moves**
+- 📜 **Complete move history** with time travel
+- 💾 **Game state persistence** using `localStorage`
+- 🔗 **Shareable game states** via URL
+- 📱 **Fully responsive design**
+- 🎨 **Beautiful UI** with gradient backgrounds and animations
+- 🎓 **Interactive "How to Play" tutorial**
+
+
+## 🚀 Tech Stack
+
+- **[Next.js 14](https://nextjs.org/)** - React framework
+- **[TypeScript](https://www.typescriptlang.org/)** - Type safety
+- **[Tailwind CSS](https://tailwindcss.com/)** - Styling
+- **[Framer Motion](https://www.framer.com/motion/)** - Animations
+- **[Radix UI](https://www.radix-ui.com/)** - UI Components
+- **[Lucide Icons](https://lucide.dev/)** - Icons
+
+
+## 🛠️ Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/yourusername/nextjs-tic-tac-toe.git
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   cd nextjs-tic-tac-toe
+   npm install
+   ```
+
+3. **Run the development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open [http://localhost:3000](http://localhost:3000)** in your browser to start playing!
+
+
+## 🎮 How to Play
+
+1. The game starts with **Player X** and alternates between **X** and **O**.
+2. Click on any empty square to make a move.
+3. Get **three in a row** (horizontally, vertically, or diagonally) to win.
+4. Use the **undo/redo buttons** to navigate through moves.
+5. Click on any move in the history to **jump to that game state**.
+6. Share your game state with friends using the **URL**.
+
+
+## 🏗️ Project Structure
+
+```
+nextjs-tic-tac-toe/
+├── app/
+│   ├── components/       # React components
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Home page
+├── types/                # TypeScript types
+├── utils/                # Game logic utilities
+└── public/               # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧪 Key Components
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **Game Component**
+The main game component that manages the game state and coordinates between different screens.
 
-## Learn More
+### **GameBoard Component**
+Renders the game board and handles player interactions.
 
-To learn more about Next.js, take a look at the following resources:
+### **Move History**
+Keeps track of all moves and allows players to time travel to previous game states.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📝 License
 
-## Deploy on Vercel
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a **Pull Request**.
+
+1. **Fork the project.**
+2. Create your feature branch:  
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. Commit your changes:  
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. Push to the branch:  
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. Open a **Pull Request**.
+
+
+## 🙏 Acknowledgments
+
+- Inspired by the **React tutorial's Tic Tac Toe game**.
+- UI components from **[shadcn/ui](https://ui.shadcn.com/)**.
+- Icons from **[Lucide Icons](https://lucide.dev/)**.
+
