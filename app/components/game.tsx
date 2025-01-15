@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
-import { GameState, Move } from "../../types/game";
+import { GameState, Move, GameMode } from "../../types/game";
 import {
   checkWinner,
   getPositionCoordinates,
@@ -13,6 +13,8 @@ import {
 import { SplashScreen } from "./splash-screen";
 import { HowToPlay } from "./how-to-play";
 import { GameBoard } from "./game-board";
+import { GameModeSelection } from "./game-mode-selection";
+import { findBestMove } from "../../utils/ai";
 
 const INITIAL_STATE: GameState = {
   board: Array(9).fill(null),
@@ -20,9 +22,10 @@ const INITIAL_STATE: GameState = {
   winner: null,
   history: [Array(9).fill(null)],
   currentStep: 0,
+  gameMode: "multi",
 };
 
-type GameScreen = "splash" | "howToPlay" | "game";
+type GameScreen = "splash" | "howToPlay" | "modeSelection" | "game";
 
 export default function TicTacToe() {
   const router = useRouter();
@@ -30,6 +33,7 @@ export default function TicTacToe() {
   const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
   const [moves, setMoves] = useState<Move[]>([]);
   const [currentScreen, setCurrentScreen] = useState<GameScreen>("splash");
+  const [gameMode, setGameMode] = useState<GameMode>("multi");
 
   // Handle screen transitions
   useEffect(() => {
@@ -60,6 +64,7 @@ export default function TicTacToe() {
             winner,
             history,
             currentStep: history.length - 1,
+            gameMode: prev.gameMode,
           };
         }
         return prev;
@@ -119,6 +124,7 @@ export default function TicTacToe() {
         winner: checkWinner(newBoard),
         history: [...prev.history.slice(0, prev.currentStep + 1), newBoard],
         currentStep: prev.currentStep + 1,
+        gameMode: prev.gameMode,
       }));
     },
     [gameState]
@@ -147,9 +153,39 @@ export default function TicTacToe() {
   }, [gameState.currentStep, gameState.history.length, jumpTo]);
 
   const handleReset = useCallback(() => {
-    setGameState(INITIAL_STATE);
+    setGameState((prev) => ({
+      ...INITIAL_STATE,
+      gameMode: prev.gameMode,
+    }));
     setMoves([]);
   }, []);
+
+  const handleNewGame = useCallback(() => {
+    setGameState((prev) => ({
+      ...INITIAL_STATE,
+      gameMode: prev.gameMode,
+    }));
+    setMoves([]);
+    setCurrentScreen("modeSelection");
+  }, []);
+
+  // Add this effect for AI moves
+  useEffect(() => {
+    if (
+      gameMode === "single" &&
+      gameState.currentPlayer === "O" &&
+      !gameState.winner
+    ) {
+      const timer = setTimeout(() => {
+        const aiMove = findBestMove([...gameState.board]);
+        if (aiMove !== -1) {
+          handleCellClick(aiMove);
+        }
+      }, 500); // Add a small delay to make AI moves feel more natural
+
+      return () => clearTimeout(timer);
+    }
+  }, [gameState.currentPlayer, gameState.board, gameMode, gameState.winner]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-600 flex flex-col items-center justify-center p-4">
@@ -157,7 +193,18 @@ export default function TicTacToe() {
         {currentScreen === "splash" ? (
           <SplashScreen key="splash" onComplete={() => {}} />
         ) : currentScreen === "howToPlay" ? (
-          <HowToPlay key="howtoplay" onStart={() => setCurrentScreen("game")} />
+          <HowToPlay
+            key="howtoplay"
+            onStart={() => setCurrentScreen("modeSelection")}
+          />
+        ) : currentScreen === "modeSelection" ? (
+          <GameModeSelection
+            key="modeselection"
+            onSelectMode={(mode) => {
+              setGameMode(mode);
+              setCurrentScreen("game");
+            }}
+          />
         ) : (
           <GameBoard
             key="game"
@@ -168,6 +215,7 @@ export default function TicTacToe() {
             onRedo={handleRedo}
             onReset={handleReset}
             onJumpTo={jumpTo}
+            onNewGame={handleNewGame}
           />
         )}
       </AnimatePresence>

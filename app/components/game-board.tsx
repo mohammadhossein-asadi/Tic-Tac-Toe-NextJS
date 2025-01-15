@@ -14,6 +14,7 @@ interface GameBoardProps {
   onRedo: () => void;
   onReset: () => void;
   onJumpTo: (step: number) => void;
+  onNewGame: () => void;
 }
 
 export function GameBoard({
@@ -24,6 +25,7 @@ export function GameBoard({
   onRedo,
   onReset,
   onJumpTo,
+  onNewGame,
 }: GameBoardProps) {
   return (
     <motion.div
@@ -38,15 +40,22 @@ export function GameBoard({
             <div className="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center font-bold">
               X
             </div>
-            <span>PLAYER 1</span>
+            <span>{gameState.gameMode === "single" ? "YOU" : "PLAYER 1"}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-orange-400 rounded flex items-center justify-center font-bold">
               O
             </div>
-            <span>PLAYER 2</span>
+            <span>{gameState.gameMode === "single" ? "AI" : "PLAYER 2"}</span>
           </div>
         </div>
+        <Button
+          onClick={onNewGame}
+          variant="outline"
+          className="text-sm text-blue-600 hover:text-blue-700"
+        >
+          Start New Game
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
