@@ -15,6 +15,7 @@ import { HowToPlay } from "./how-to-play";
 import { GameBoard } from "./game-board";
 import { GameModeSelection } from "./game-mode-selection";
 import { findBestMove } from "../../utils/ai";
+import { event } from "../lib/gtag";
 
 const INITIAL_STATE: GameState = {
   board: Array(9).fill(null),
@@ -102,6 +103,13 @@ export default function TicTacToe() {
     (position: number) => {
       if (gameState.board[position] || gameState.winner) return;
 
+      // Track move
+      event({
+        action: "game_move",
+        category: "Game",
+        label: `Player ${gameState.currentPlayer} - Position ${position}`,
+      });
+
       const newBoard = [...gameState.board];
       newBoard[position] = gameState.currentPlayer;
 
@@ -186,6 +194,18 @@ export default function TicTacToe() {
       return () => clearTimeout(timer);
     }
   }, [gameState.currentPlayer, gameState.board, gameMode, gameState.winner]);
+
+  // Track game end
+  useEffect(() => {
+    if (gameState.winner) {
+      event({
+        action: "game_end",
+        category: "Game",
+        label:
+          gameState.winner === "DRAW" ? "Draw" : `Winner: ${gameState.winner}`,
+      });
+    }
+  }, [gameState.winner]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-600 flex flex-col items-center justify-center p-4">

@@ -3,12 +3,24 @@
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { User, Users } from "lucide-react";
+import { event } from "../lib/gtag";
 
 interface GameModeSelectionProps {
   onSelectMode: (mode: "single" | "multi") => void;
 }
 
 export function GameModeSelection({ onSelectMode }: GameModeSelectionProps) {
+  const handleModeSelection = (mode: "single" | "multi") => {
+    // Track game mode selection
+    event({
+      action: "select_game_mode",
+      category: "Game",
+      label: mode,
+    });
+
+    onSelectMode(mode);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -22,14 +34,14 @@ export function GameModeSelection({ onSelectMode }: GameModeSelectionProps) {
         </h2>
         <div className="space-y-4">
           <Button
-            onClick={() => onSelectMode("single")}
+            onClick={() => handleModeSelection("single")}
             className="w-full h-16 text-lg"
           >
             <User className="w-6 h-6 mr-2" />
             Single Player
           </Button>
           <Button
-            onClick={() => onSelectMode("multi")}
+            onClick={() => handleModeSelection("multi")}
             className="w-full h-16 text-lg"
           >
             <Users className="w-6 h-6 mr-2" />
