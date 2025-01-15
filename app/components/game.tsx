@@ -36,7 +36,7 @@ export default function TicTacToe() {
     if (currentScreen === "splash") {
       const timer = setTimeout(() => {
         setCurrentScreen("howToPlay");
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [currentScreen]);
@@ -154,14 +154,13 @@ export default function TicTacToe() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-600 flex flex-col items-center justify-center p-4">
       <AnimatePresence mode="wait">
-        {currentScreen === "splash" && (
-          <SplashScreen onComplete={() => setCurrentScreen("howToPlay")} />
-        )}
-        {currentScreen === "howToPlay" && (
-          <HowToPlay onStart={() => setCurrentScreen("game")} />
-        )}
-        {currentScreen === "game" && (
+        {currentScreen === "splash" ? (
+          <SplashScreen key="splash" onComplete={() => {}} />
+        ) : currentScreen === "howToPlay" ? (
+          <HowToPlay key="howtoplay" onStart={() => setCurrentScreen("game")} />
+        ) : (
           <GameBoard
+            key="game"
             gameState={gameState}
             moves={moves}
             onCellClick={handleCellClick}
